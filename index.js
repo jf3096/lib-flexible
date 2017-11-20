@@ -1,19 +1,25 @@
-(function flexible (window, document) {
-  var docEl = document.documentElement
+(function (window, document) {
+  // 拉取 document 元素
+  var docEl = document.documentElement;
+  // 判断当前 window dpr 比例，若无直接降级使用 1
   var dpr = window.devicePixelRatio || 1
 
-  // adjust body font size
+  // 设置 body 字体大小
   function setBodyFontSize () {
     if (document.body) {
       document.body.style.fontSize = (12 * dpr) + 'px'
     }
     else {
+      // TODO: 这种情况可能发生在标签置于 head 标签中，待测试。
       document.addEventListener('DOMContentLoaded', setBodyFontSize)
     }
   }
+  
+  // 立即自执行
   setBodyFontSize();
 
-  // set 1rem = viewWidth / 10
+  // 设置 1 rem 等于 视区除以10。
+  // 若设计稿是750px，那么1rem等于75px。
   function setRemUnit () {
     var rem = docEl.clientWidth / 10
     docEl.style.fontSize = rem + 'px'
@@ -29,7 +35,7 @@
     }
   })
 
-  // detect 0.5px supports
+  // 检查发现支持0.5px
   if (dpr >= 2) {
     var fakeBody = document.createElement('body')
     var testElement = document.createElement('div')
